@@ -22,6 +22,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.LongAdder;
@@ -304,16 +305,24 @@ public class DirectUpdateHandler2 extends UpdateHandler
           "Server error writing document id " + cmd.getPrintableId() + " to the index.";
       throw new SolrException(SolrException.ErrorCode.SERVER_ERROR, errorMsg, e);
     } catch (IllegalArgumentException iae) {
-      String errorDetails =
-          (iae.getCause() instanceof BytesRefHash.MaxBytesLengthExceededException
-              ? ". Perhaps the document has an indexed string field (solr.StrField) which is too large"
-              : "");
-      String errorMsg =
-          "Exception writing document id "
-              + cmd.getPrintableId()
-              + " to the index; possible analysis error: "
-              + iae.getMessage()
-              + errorDetails;
+//      String errorDetails =
+//          (iae.getCause() instanceof BytesRefHash.MaxBytesLengthExceededException
+//              ? ". Perhaps the document has an indexed string field (solr.StrField) which is too large"
+//              : "");
+
+      String errorMsg = String.format(Locale.ROOT,
+              "Exception writing document id %s to the index; possible analysis error: "
+                      + iae.getMessage()
+                      + (iae.getCause() instanceof BytesRefHash.MaxBytesLengthExceededException
+                      ? ". Perhaps the document has an indexed string field (solr.StrField) which is too large"
+                      : ""),
+              cmd.getPrintableId());
+//      String errorMsg =
+//          "Exception writing document id "
+//              + cmd.getPrintableId()
+//              + " to the index; possible analysis error: "
+//              + iae.getMessage()
+//              + errorDetails;
       throw new SolrException(SolrException.ErrorCode.BAD_REQUEST, errorMsg, iae);
     } catch (RuntimeException t) {
       String errorMsg =
