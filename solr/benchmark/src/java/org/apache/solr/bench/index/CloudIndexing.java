@@ -153,22 +153,33 @@ public class CloudIndexing {
     UpdateRequest updateRequest = new UpdateRequest();
     updateRequest.setBasePath(
         miniClusterState.nodes.get(miniClusterState.getRandom().nextInt(state.nodeCount)));
-    SolrInputDocument doc = state.getLargeDoc();
+    SolrInputDocument doc = new SolrInputDocument();
+    doc.addField("id", 555);
+    // use invalid String.format parameter in field name to test DirectUpdateHandler2#addDoc
+    // exception logging
+    doc.addField("t%)_s", "a".repeat(50000));
+
     updateRequest.add(doc);
 
     return miniClusterState.client.request(updateRequest, BenchState.COLLECTION);
   }
 
-  @Benchmark
-  @Timeout(time = 300)
-  public Object indexSmallDoc(
-      MiniClusterState.MiniClusterBenchState miniClusterState, BenchState state) throws Exception {
-    UpdateRequest updateRequest = new UpdateRequest();
-    updateRequest.setBasePath(
-        miniClusterState.nodes.get(miniClusterState.getRandom().nextInt(state.nodeCount)));
-    SolrInputDocument doc = state.getSmallDoc();
-    updateRequest.add(doc);
-
-    return miniClusterState.client.request(updateRequest, BenchState.COLLECTION);
+  public static void main(String[] args) {
+    CloudIndexing indexing = new CloudIndexing();
+    BenchState state = new BenchState();
+    MiniClusterState.MiniClusterBenchState miniClusterState = new MiniClusterState.MiniClusterBenchState();
   }
+
+//  @Benchmark
+//  @Timeout(time = 300)
+//  public Object indexSmallDoc(
+//      MiniClusterState.MiniClusterBenchState miniClusterState, BenchState state) throws Exception {
+//    UpdateRequest updateRequest = new UpdateRequest();
+//    updateRequest.setBasePath(
+//        miniClusterState.nodes.get(miniClusterState.getRandom().nextInt(state.nodeCount)));
+//    SolrInputDocument doc = state.getSmallDoc();
+//    updateRequest.add(doc);
+//
+//    return miniClusterState.client.request(updateRequest, BenchState.COLLECTION);
+//  }
 }
