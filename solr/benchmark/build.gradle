@@ -59,3 +59,9 @@ dependencies {
   runtimeOnly 'com.lmax:disruptor'
   annotationProcessor 'org.openjdk.jmh:jmh-generator-annprocess'
 }
+
+
+task copyDependencies(type: Copy) {
+  from configurations.default
+  into "${buildDir}/libs"
+}

@@ -59,22 +59,22 @@ public class CloudIndexing {
     static final String COLLECTION = "testCollection";
 
     @Param({"1"})
-    public int scale;
+    public int scale = 1;
 
     @Param("4")
-    int nodeCount;
+    int nodeCount = 1;
 
     @Param("5")
-    int numShards;
+    int numShards = 1;
 
     @Param({"1", "3"})
-    int numReplicas;
+    int numReplicas = 1;
 
     @Param({"0", "15", "30", "70", "100", "500", "1000"})
-    int useStringUtf8Over;
+    int useStringUtf8Over = 15;
 
     @Param({"true", "false"})
-    boolean directBuffer;
+    boolean directBuffer = true;
 
     private final org.apache.solr.bench.Docs largeDocs;
     private Iterator<SolrInputDocument> largeDocIterator;
@@ -96,7 +96,7 @@ public class CloudIndexing {
               .field(longs().all());
 
       try {
-        largeDocIterator = largeDocs.preGenerate(50000);
+        largeDocIterator = largeDocs.preGenerate(1);
 
         smallDocs =
             docs()
@@ -106,7 +106,7 @@ public class CloudIndexing {
                 .field("int2_i", integers().all())
                 .field("long1_l", longs().all());
 
-        smallDocIterator = smallDocs.preGenerate(50000);
+        smallDocIterator = smallDocs.preGenerate(1);
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         throw new RuntimeException(e);
@@ -164,10 +164,13 @@ public class CloudIndexing {
     return miniClusterState.client.request(updateRequest, BenchState.COLLECTION);
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     CloudIndexing indexing = new CloudIndexing();
     BenchState state = new BenchState();
     MiniClusterState.MiniClusterBenchState miniClusterState = new MiniClusterState.MiniClusterBenchState();
+    miniClusterState.doSetup(null, null);
+    state.doSetup(miniClusterState);
+    indexing.indexLargeDoc(miniClusterState, state);
   }
 
 //  @Benchmark

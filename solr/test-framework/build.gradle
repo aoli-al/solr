@@ -78,3 +78,6 @@ dependencies {
   implementation 'junit:junit'
   implementation 'org.hamcrest:hamcrest'
 }
+
+
+jar {}
