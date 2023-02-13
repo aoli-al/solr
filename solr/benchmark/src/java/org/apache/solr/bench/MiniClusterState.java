@@ -254,7 +254,9 @@ public class MiniClusterState {
         cluster =
             new MiniSolrCloudCluster.Builder(nodeCount, miniClusterBaseDir)
                 .formatZkServer(false)
-                .addConfig("conf", getFile("src/resources/configs/cloud-minimal/conf").toPath())
+                .addConfig(
+                    "conf",
+                    getFile("solr/benchmark/src/resources/configs/cloud-minimal/conf").toPath())
                 .configure();
       } catch (Exception e) {
         if (Files.exists(miniClusterBaseDir)) {

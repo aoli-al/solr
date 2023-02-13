@@ -167,22 +167,24 @@ public class CloudIndexing {
   public static void main(String[] args) throws Exception {
     CloudIndexing indexing = new CloudIndexing();
     BenchState state = new BenchState();
-    MiniClusterState.MiniClusterBenchState miniClusterState = new MiniClusterState.MiniClusterBenchState();
+    MiniClusterState.MiniClusterBenchState miniClusterState =
+        new MiniClusterState.MiniClusterBenchState();
     miniClusterState.doSetup(null, null);
     state.doSetup(miniClusterState);
     indexing.indexLargeDoc(miniClusterState, state);
   }
 
-//  @Benchmark
-//  @Timeout(time = 300)
-//  public Object indexSmallDoc(
-//      MiniClusterState.MiniClusterBenchState miniClusterState, BenchState state) throws Exception {
-//    UpdateRequest updateRequest = new UpdateRequest();
-//    updateRequest.setBasePath(
-//        miniClusterState.nodes.get(miniClusterState.getRandom().nextInt(state.nodeCount)));
-//    SolrInputDocument doc = state.getSmallDoc();
-//    updateRequest.add(doc);
-//
-//    return miniClusterState.client.request(updateRequest, BenchState.COLLECTION);
-//  }
+  //  @Benchmark
+  //  @Timeout(time = 300)
+  //  public Object indexSmallDoc(
+  //      MiniClusterState.MiniClusterBenchState miniClusterState, BenchState state) throws
+  // Exception {
+  //    UpdateRequest updateRequest = new UpdateRequest();
+  //    updateRequest.setBasePath(
+  //        miniClusterState.nodes.get(miniClusterState.getRandom().nextInt(state.nodeCount)));
+  //    SolrInputDocument doc = state.getSmallDoc();
+  //    updateRequest.add(doc);
+  //
+  //    return miniClusterState.client.request(updateRequest, BenchState.COLLECTION);
+  //  }
 }
