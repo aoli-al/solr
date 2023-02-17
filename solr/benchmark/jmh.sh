@@ -26,18 +26,9 @@ else
 fi
 
 
-if [ -d "lib" ]
-then
-  echo "Using lib directory for classpath..."
-  classpath="lib/*:build/classes/java/main"
-else
-  echo "Getting classpath from gradle..."
-  # --no-daemon
-  gradleCmd="${gradlew_dir}/gradlew"
-  $gradleCmd -q -p ../../ jar
-  echo "gradle build done"
-  classpath=$($gradleCmd -q echoCp)
-fi
+echo "Using lib directory for classpath..."
+classpath="$1/*:build/classes/java/main"
+shift;
 
 # shellcheck disable=SC2145
 echo "running JMH with args: $@"
@@ -59,9 +50,16 @@ gcArgs="-jvmArgs -XX:+UseG1GC -jvmArgs -XX:+ParallelRefProcEnabled"
 # -jvmArgs -Dlog4j2.debug 
 loggingArgs="-jvmArgs -Dlog4jConfigurationFile=./log4j2-bench.xml -jvmArgs -Dlog4j2.is.webapp=false -jvmArgs -Dlog4j2.garbagefreeThreadContextMap=true -jvmArgs -Dlog4j2.enableDirectEncoders=true -jvmArgs -Dlog4j2.enable.threadlocals=true"
 
+IFS=" " read -ra my_array <<< "$JAVA_OPTS"
+for i in "${my_array[@]}"
+do
+  jvmArgs="$jvmArgs -jvmArgs $i"
+done
+
 #set -x
 
 # shellcheck disable=SC2086
-exec java -cp "$classpath" --add-opens=java.base/java.io=ALL-UNNAMED -Djdk.module.illegalAccess.silent=true org.openjdk.jmh.Main $jvmArgs $loggingArgs $gcArgs "$@"
+echo $JAVA_HOME/bin/java -cp "$classpath" --add-opens=java.base/java.io=ALL-UNNAMED -Djdk.module.illegalAccess.silent=true org.openjdk.jmh.Main $jvmArgs $loggingArgs $gcArgs "$@"
+exec $JAVA_HOME/bin/java -cp "$classpath" --add-opens=java.base/java.io=ALL-UNNAMED -Djdk.module.illegalAccess.silent=true org.openjdk.jmh.Main $jvmArgs $loggingArgs $gcArgs "$@"
 
 echo "JMH benchmarks done"
