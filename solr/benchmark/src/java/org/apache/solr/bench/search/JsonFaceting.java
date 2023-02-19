@@ -48,10 +48,9 @@ import org.openjdk.jmh.infra.BenchmarkParams;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Threads(1)
-@Warmup(time = 10, iterations = 4)
-@Measurement(time = 15, iterations = 5)
+@Warmup(time = 10, iterations = 1)
+@Measurement(time = 15, iterations = 1)
 @Fork(value = 1)
-@Timeout(time = 60)
 public class JsonFaceting {
 
   @State(Scope.Benchmark)
@@ -174,7 +173,6 @@ public class JsonFaceting {
   }
 
   @Benchmark
-  @Timeout(time = 500, timeUnit = TimeUnit.SECONDS)
   public Object jsonFacet(
       MiniClusterState.MiniClusterBenchState miniClusterState,
       BenchState state,

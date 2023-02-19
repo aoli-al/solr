@@ -46,10 +46,9 @@ import org.openjdk.jmh.infra.BenchmarkParams;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Threads(4)
-@Warmup(time = 10, iterations = 3)
-@Measurement(time = 20, iterations = 4)
+@Warmup(time = 10, iterations = 1)
+@Measurement(time = 20, iterations = 1)
 @Fork(value = 1)
-@Timeout(time = 60)
 // A benchmark to experiment with the performance of distributed indexing.
 public class CloudIndexing {
 
@@ -147,7 +146,6 @@ public class CloudIndexing {
   }
 
   @Benchmark
-  @Timeout(time = 300)
   public Object indexLargeDoc(
       MiniClusterState.MiniClusterBenchState miniClusterState, BenchState state) throws Exception {
     UpdateRequest updateRequest = new UpdateRequest();
@@ -160,7 +158,6 @@ public class CloudIndexing {
   }
 
   @Benchmark
-  @Timeout(time = 300)
   public Object indexSmallDoc(
       MiniClusterState.MiniClusterBenchState miniClusterState, BenchState state) throws Exception {
     UpdateRequest updateRequest = new UpdateRequest();
