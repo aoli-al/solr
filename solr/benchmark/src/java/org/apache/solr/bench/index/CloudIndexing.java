@@ -66,13 +66,13 @@ public class CloudIndexing {
     @Param("5")
     int numShards;
 
-    @Param({"1", "3"})
+    @Param({"1"})
     int numReplicas;
 
-    @Param({"0", "15", "30", "70", "100", "500", "1000"})
+    @Param({"100"})
     int useStringUtf8Over;
 
-    @Param({"true", "false"})
+    @Param({"true"})
     boolean directBuffer;
 
     private final org.apache.solr.bench.Docs largeDocs;
@@ -145,7 +145,6 @@ public class CloudIndexing {
     }
   }
 
-  @Benchmark
   public Object indexLargeDoc(
       MiniClusterState.MiniClusterBenchState miniClusterState, BenchState state) throws Exception {
     UpdateRequest updateRequest = new UpdateRequest();
@@ -157,7 +156,6 @@ public class CloudIndexing {
     return miniClusterState.client.request(updateRequest, BenchState.COLLECTION);
   }
 
-  @Benchmark
   public Object indexSmallDoc(
       MiniClusterState.MiniClusterBenchState miniClusterState, BenchState state) throws Exception {
     UpdateRequest updateRequest = new UpdateRequest();

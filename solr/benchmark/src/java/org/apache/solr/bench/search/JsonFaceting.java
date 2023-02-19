@@ -49,7 +49,7 @@ import org.openjdk.jmh.infra.BenchmarkParams;
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Threads(1)
 @Warmup(time = 10, iterations = 1)
-@Measurement(time = 15, iterations = 1)
+@Measurement(time = 15, iterations = 4)
 @Fork(value = 1)
 public class JsonFaceting {
 
@@ -58,7 +58,7 @@ public class JsonFaceting {
 
     public static final String collection = "testCollection";
 
-    @Param({"500000"})
+    @Param({"100000"})
     public int docCount;
 
     @Param("2")

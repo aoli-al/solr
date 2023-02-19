@@ -44,8 +44,8 @@ import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.annotations.Warmup;
 
 @Fork(value = 1)
-@Warmup(time = 1, iterations = 9)
-@Measurement(time = 1, iterations = 9)
+@Warmup(time = 1, iterations = 1)
+@Measurement(time = 1, iterations = 1)
 @Threads(value = 4)
 public class FilterCache {
 
@@ -59,11 +59,11 @@ public class FilterCache {
      * the document match) or 2 (very few documents match) will increase the time spent resolving
      * individual query misses and decrease the impact that caching will have on performance.
      */
-    @Param({"2", "98"})
+    @Param({"50"})
     String frequency;
 
     // We don't need to test the full cross-product of these paramaters, so pick the relevant ones
-    @Param({"true:true:1", "true:false:1", "true:true:0", "true:false:0", "false:false:0"})
+    @Param({"true:true:1"})
     String cacheEnabledAsyncSize;
 
     QueryRequest q1 = new QueryRequest(new SolrQuery("q", "*:*", "fq", "Ea_b:true"));
@@ -135,7 +135,6 @@ public class FilterCache {
     }
   }
 
-  @Benchmark
   public Object filterCacheMultipleQueries(
       BenchState benchState, MiniClusterState.MiniClusterBenchState miniClusterState)
       throws SolrServerException, IOException {
@@ -143,7 +142,6 @@ public class FilterCache {
         miniClusterState.getRandom().nextBoolean() ? benchState.q1 : benchState.q2, COLLECTION);
   }
 
-  @Benchmark
   public Object filterCacheSingleQuery(
       BenchState benchState, MiniClusterState.MiniClusterBenchState miniClusterState)
       throws SolrServerException, IOException {
