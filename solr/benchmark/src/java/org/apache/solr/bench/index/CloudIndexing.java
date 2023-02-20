@@ -75,7 +75,7 @@ public class CloudIndexing {
     @Param({"true"})
     boolean directBuffer;
 
-    private final org.apache.solr.bench.Docs largeDocs;
+    private org.apache.solr.bench.Docs largeDocs;
     private Iterator<SolrInputDocument> largeDocIterator;
 
     private final org.apache.solr.bench.Docs smallDocs;
@@ -83,19 +83,19 @@ public class CloudIndexing {
 
     public BenchState() {
 
-      largeDocs =
-          docs()
-              .field("id", integers().incrementing())
-              .field(strings().basicLatinAlphabet().multi(312).ofLengthBetween(30, 64))
-              .field(strings().basicLatinAlphabet().multi(312).ofLengthBetween(30, 64))
-              .field(integers().all())
-              .field(integers().all())
-              .field(integers().all())
-              .field(longs().all())
-              .field(longs().all());
+//      largeDocs =
+//          docs()
+//              .field("id", integers().incrementing())
+//              .field(strings().basicLatinAlphabet().multi(312).ofLengthBetween(30, 64))
+//              .field(strings().basicLatinAlphabet().multi(312).ofLengthBetween(30, 64))
+//              .field(integers().all())
+//              .field(integers().all())
+//              .field(integers().all())
+//              .field(longs().all())
+//              .field(longs().all());
 
       try {
-        largeDocIterator = largeDocs.preGenerate(50000);
+//        largeDocIterator = largeDocs.preGenerate(50000);
 
         smallDocs =
             docs()
@@ -156,6 +156,8 @@ public class CloudIndexing {
     return miniClusterState.client.request(updateRequest, BenchState.COLLECTION);
   }
 
+  @Benchmark
+  @Timeout(time = 300)
   public Object indexSmallDoc(
       MiniClusterState.MiniClusterBenchState miniClusterState, BenchState state) throws Exception {
     UpdateRequest updateRequest = new UpdateRequest();
