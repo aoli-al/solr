@@ -49,6 +49,7 @@ import org.openjdk.jmh.infra.BenchmarkParams;
 @Warmup(time = 10, iterations = 1)
 @Measurement(time = 20, iterations = 1)
 @Fork(value = 1)
+@Timeout(time = 60)
 // A benchmark to experiment with the performance of distributed indexing.
 public class CloudIndexing {
 
