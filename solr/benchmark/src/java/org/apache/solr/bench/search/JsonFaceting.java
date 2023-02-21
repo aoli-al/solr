@@ -172,7 +172,7 @@ public class JsonFaceting {
     }
   }
 
-  @Benchmark
+//  @Benchmark
   public Object jsonFacet(
       MiniClusterState.MiniClusterBenchState miniClusterState,
       BenchState state,
