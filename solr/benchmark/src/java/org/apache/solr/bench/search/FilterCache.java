@@ -45,7 +45,7 @@ import org.openjdk.jmh.annotations.Warmup;
 
 @Fork(value = 1)
 @Warmup(time = 1, iterations = 1)
-@Measurement(time = 1, iterations = 1)
+@Measurement(time = 1, iterations = 4)
 @Threads(value = 4)
 public class FilterCache {
 

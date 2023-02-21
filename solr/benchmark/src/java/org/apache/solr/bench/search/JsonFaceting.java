@@ -61,13 +61,13 @@ public class JsonFaceting {
     @Param({"100000"})
     public int docCount;
 
-    @Param("2")
+    @Param("1")
     int nodeCount;
 
     @Param("1")
     int numReplicas;
 
-    @Param("4")
+    @Param("1")
     int numShards;
 
     // DV,  // DocValues, collect into ordinal array
@@ -172,6 +172,7 @@ public class JsonFaceting {
     }
   }
 
+  @Benchmark
   public Object jsonFacet(
       MiniClusterState.MiniClusterBenchState miniClusterState,
       BenchState state,
