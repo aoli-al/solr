@@ -45,7 +45,7 @@ echo "running JMH with args: $@"
 # -XX:-UseBiasedLocking - should be unreflective in recent JVMs and removed in the latest.
 
 jvmArgs="-jvmArgs -Djmh.shutdownTimeout=5 -jvmArgs -Djmh.shutdownTimeout.step=3 -jvmArgs -Djava.security.egd=file:/dev/./urandom  -jvmArgs -XX:-UseBiasedLocking -jvmArgs -XX:+UnlockDiagnosticVMOptions -jvmArgs -XX:+DebugNonSafepoints -jvmArgs --add-opens=java.base/java.lang.reflect=ALL-UNNAMED"
-gcArgs="-jvmArgs -XX:+UseG1GC -jvmArgs -XX:+ParallelRefProcEnabled -jvmArgs -Xmx16g"
+gcArgs="-jvmArgs -XX:+UseG1GC -jvmArgs -XX:+ParallelRefProcEnabled -jvmArgs -Xmx32g"
 
 # -jvmArgs -Dlog4j2.debug 
 loggingArgs="-jvmArgs -Dlog4jConfigurationFile=./log4j2-bench.xml -jvmArgs -Dlog4j2.is.webapp=false -jvmArgs -Dlog4j2.garbagefreeThreadContextMap=true -jvmArgs -Dlog4j2.enableDirectEncoders=true -jvmArgs -Dlog4j2.enable.threadlocals=true"
@@ -60,6 +60,6 @@ done
 
 # shellcheck disable=SC2086
 echo $JAVA_HOME/bin/java -cp "$classpath" --add-opens=java.base/java.io=ALL-UNNAMED -Djdk.module.illegalAccess.silent=true org.openjdk.jmh.Main $jvmArgs $loggingArgs $gcArgs "$@"
-exec $JAVA_HOME/bin/java -cp "$classpath" --add-opens=java.base/java.io=ALL-UNNAMED -Djdk.module.illegalAccess.silent=true org.openjdk.jmh.Main $jvmArgs $loggingArgs $gcArgs "$@"
+exec $JAVA_HOME/bin/java -Xmx32g -cp "$classpath" --add-opens=java.base/java.io=ALL-UNNAMED -Djdk.module.illegalAccess.silent=true org.openjdk.jmh.Main $jvmArgs $loggingArgs $gcArgs "$@"
 
 echo "JMH benchmarks done"
