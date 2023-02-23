@@ -158,6 +158,7 @@ public class CloudIndexing {
   }
 
   @Benchmark
+  @Timeout(time = 300)
   public Object indexSmallDoc(
       MiniClusterState.MiniClusterBenchState miniClusterState, BenchState state) throws Exception {
     UpdateRequest updateRequest = new UpdateRequest();
